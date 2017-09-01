@@ -14,6 +14,11 @@ class ViolationsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/migrations');
+
+        $this->publishes([
+            __DIR__.'/config' => config_path()
+        ]);
+
     }
 
     /**
@@ -23,6 +28,7 @@ class ViolationsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // merge package config to app's config
+        $this->mergeConfigFrom(__DIR__ . '/config/aj-vio-config.php', 'aj-vio-config');
     }
 }
