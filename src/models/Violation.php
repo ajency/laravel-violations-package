@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Ajency\Violations\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
