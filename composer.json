@@ -1,0 +1,15 @@
+{
+    "name": "ajency/violations",
+    "authors": [
+        {
+            "name": "ajency",
+            "email": "nutan@ajency.in"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ajency\\Violations\\": "src/"
+        }
+    },    
+    "require": {}
+}
