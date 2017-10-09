@@ -25,14 +25,14 @@
     |   										      {
     |   										        "title": "Start time",
     |   										        "key_field": "start_time",
-    |										        "field_type": "Numeric",
-    |										        "condition": "greater_than",
-    |										        "value": "organisation_start_time",
-    |										        "preset_value": 11
+    |										            "field_type": "Numeric",
+    |										            "condition": "greater_than",
+    |										            "value": "organisation_start_time",
+    |										            "preset_value": 11
+    |										          }
+    |										        ]
     |										      }
-    |										    ]
-    |										  }
-    |								]'
+    |								    ]'
     |
     |
     | JSON fields property description:
@@ -75,7 +75,90 @@
     |			e. preset_value : A default value for the key_field. If set and if the value is not sent at the time of creating violation then this value will be used to  
     |			    
     */
-		'create_violation_rules' => '[]'
+		'create_violation_rules' => '[
+                          
+                          {
+                            "violation_type": "late_alert",
+                            "violation_data": {
+                              "cc_list": [
+                                "organisation_time_manager",
+                                "organisation_owner"
+                              ],
+                              "bcc_list": []
+                            },
+                            "rules": [
+                              {
+                                "title": "Start time",
+                                "key_field": "start_time",
+                                "field_type": "Numeric",
+                                "condition": "greater_than",
+                                "value": "organisation_start_time",
+                                "preset_value": 11
+                              }
+                            ]
+                          },
+                          {
+                            "violation_type": "minimum_hrs_of_day",
+                            "violation_data": {
+                              "cc_list": [
+                                "organisation_time_manager",
+                                "organisation_owner"
+                              ],
+                              "bcc_list": []
+                            },
+                            "rules": [
+                              {
+                                "title": "Total Hours in a day",
+                                "key_field": "total_hrs_in_day",
+                                "field_type": "Numeric",
+                                "condition": "less_than",
+                                "value": "organisation_minimum_hrs_in_day",
+                                "preset_value": 5
+                              }
+                            ]
+                          },
+                          {
+                            "violation_type": "minimum_hrs_of_week",
+                            "violation_data": {
+                              "cc_list": [
+                                "organisation_time_manager",
+                                "organisation_owner"
+                              ],
+                              "bcc_list": []
+                            },
+                            "rules": [
+                              {
+                                "title": "Total hours in a week",
+                                "key_field": "total_hrs_in_week",
+                                "field_type": "Numeric",
+                                "condition": "less_than_expression",
+                                "value": "organisation_total_hrs_of_day * violator_total_week_days",
+                                "preset_value": 45
+                              }
+                            ]
+                          },
+                          {
+                            "violation_type": "minimum_hrs_of_month",
+                            "violation_data": {
+                              "cc_list": [
+                                "organisation_time_manager",
+                                "organisation_owner"
+                              ],
+                              "bcc_list": []
+                            },
+                            "rules": [
+                              {
+                                "title": "Total hours in a month",
+                                "key_field": "total_hrs_in_month",
+                                "field_type": "Numeric",
+                                "condition": "less_than_expression",
+                                "value": "organisation_total_hrs_of_day * violator_total_month_days",
+                                "preset_value": 20
+                              }
+                            ]
+                          }
+                        
+                        ]'
 
 	];
 
