@@ -1,5 +1,5 @@
 <?php
-namespace Ajency\Comm\ViolationRules;
+namespace Ajency\Violations\Ajency;
 
 use Ajency\Violations\Models\Violation;
 
