@@ -10,6 +10,16 @@
         "psr-4": {
             "Ajency\\Violations\\": "src/"
         }
-    },    
-    "require": {}
+    },
+    "require": {},
+    "extra" : {
+        "laravel": {
+            "providers": [
+                "Ajency\\Violations\\ViolationsServiceProvider"
+            ],
+            "aliases": {
+                "AjViolations" : "Ajency\\Violations\\ViolationsServiceProvider"
+            }
+        }
+    }
 }

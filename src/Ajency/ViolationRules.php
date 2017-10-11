@@ -1,6 +1,4 @@
 <?php
-
-<?php
 namespace Ajency\Comm\ViolationRules;
 
 use Ajency\Violations\Models\Violation;
@@ -8,16 +6,16 @@ use Ajency\Violations\Models\Violation;
 /*
  * A base class that lets us define Violation rule methods
  *
- * Violation rule methods are any methods utilized to create/ fetch violations based on rules 
+ * Violation rule methods are any methods utilized to create/ fetch violations based on rules
  */
 
 class ViolationRules
 {
-	
+
 	public getEnabledViolationTypes(){
 
 		// @todo       (fetch this array from violations table having flage enabled as true)
-		
+
 		$enabled_violations = ['late_alert', 'minimum_hrs_of_day', 'minimum_hrs_of_week', 'minimum_hrs_of_month'];
 
 		return $enabled_violations;
@@ -51,8 +49,8 @@ class ViolationRules
 
 		return $result;
 
-	} 
+	}
 
-}	
+}
 
 ?>
