@@ -1,6 +1,6 @@
 <?php
 
-namespace Ajency\Violations; 
+namespace Ajency\Violations;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -16,7 +16,9 @@ class ViolationsServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/migrations');
 
         $this->publishes([
-            __DIR__.'/config' => config_path()
+            __DIR__.'/config' => config_path(),
+            __DIR__.'/models/Violation.php' => app_path('Violation.php'),
+            __DIR__.'/models/ViolationType.php' => app_path('ViolationType.php'),
         ]);
 
     }
