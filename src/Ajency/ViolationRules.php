@@ -85,8 +85,11 @@ class ViolationRules
 
 			// condition(key_field,value)
 			$condition = $rule->condition;
-			return (new Condition)->$condition($keyField,$valueField,$rule->field_type);
+			 if((new Condition)->$condition($keyField,$valueField,$rule->field_type))
+			 	// if rule violated return true else check next rule
+			 	return true;
 		}
+		return false;
 	}
 
 	/**
