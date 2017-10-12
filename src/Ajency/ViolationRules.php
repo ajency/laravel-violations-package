@@ -51,7 +51,9 @@ class ViolationRules
 		}
 
 		// check if any rules are violated [ async??? ]
-		
+		if($this->checkViolationRules($violation_type,$data)) {
+			// rule violated
+		}
 		// send a mail if necessary
 
 
@@ -67,6 +69,11 @@ class ViolationRules
 	public function checkViolationRules($violationType,$data) {
 		// first get all the rules for the violation
 		$violationRules = $this->getViolationRules($violationType);
+		// if no violation rules exist
+		if($violationRules == null) {
+			// no rules exists
+			return false;
+		}
 
 		// loop through each rule and check for violation
 		foreach($violationRules->rules as $rule) {
@@ -75,15 +82,6 @@ class ViolationRules
 			$valueField = $data['rule_rhs'][$rule->value];
 			if($valueField == null)	// then take the preset value
 				$value = $rule->preset_value;
-
-
-			// output
-			$output = new ConsoleOutput;
-			$output->writeln("condition ".$rule->condition);
-			$output->writeln("key_field ".$rule->key_field);
-			$output->writeln("field_type ".$rule->field_type);
-			$output->writeln("rule ".json_encode($rule));
-			$output->writeln("rule ".$rule->condition);
 
 			// condition(key_field,value)
 			$condition = $rule->condition;
