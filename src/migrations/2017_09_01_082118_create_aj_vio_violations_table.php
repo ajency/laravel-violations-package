@@ -16,6 +16,7 @@ class CreateAjVioViolationsTable extends Migration
         Schema::create('aj_vio_violations', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('status')->unique();
+            $table->string('type');
             $table->integer('who_id');
             $table->string('who_type');
             $table->text('who_meta')->nullable();
@@ -25,12 +26,12 @@ class CreateAjVioViolationsTable extends Migration
             $table->text('cc_list')->nullable();
             $table->text('bcc_list')->nullable();
             $table->timestamps();
-        });        
+        });
     }
 
-    /**
      * Reverse the migrations.
      *
+     /**
      * @return void
      */
     public function down()
