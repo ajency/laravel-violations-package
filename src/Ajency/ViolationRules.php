@@ -2,7 +2,7 @@
 namespace Ajency\Violations\Ajency;
 
 use Ajency\Violations\Models\Violation;
-use Ajency\Violations\Ajency\Condition;
+use Ajency\Violations\Ajency\Operator;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -110,7 +110,7 @@ class ViolationRules
 
 			// condition(key_field,value)
 			$condition = $rule->condition;
-			 if((new Condition)->$condition($keyField,$valueField,$rule->field_type))
+			 if((new Operator)->$condition($keyField,$valueField,$rule->field_type))
 			 	// if rule violated return true else check next rule
 			 	return true;
 		}

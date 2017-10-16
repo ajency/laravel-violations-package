@@ -4,7 +4,7 @@ namespace Ajency\Violations\Ajency;
 
 use DateTime;
 
-class Condition {
+class Operator {
     /*
         Available conditions
         * greaterThan
