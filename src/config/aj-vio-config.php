@@ -164,7 +164,48 @@
                             ]
                           }
 
-                        ]'
+                        ]',
+		/**
+		 * default email sender : this will be used is no from attribute is sent in the violation_data
+		 *
+		 * this will be overridden if a from is passed in the violation_data
+		 */
+		'default_email_sender' => 'dilbert@ajency.in',
+		/**
+		 * Date required when sending an email
+		 *
+		 * [ NOTE ]
+		 * The name of the violator and the rule_key_fields will be passed to the view by default, which could be used in the mail content
+		 *
+		 * default email sender : this will be used is no from attribute is sent in the violation_data
+		 *
+		 * violation_type : type of the violation (same as above)
+		 * view : the name of the blade file in view that contains the email content
+		 * subject : subject line that will be added to the email
+		 */
+		'default_email_sender' => 'dilbert@ajency.in',
+		'violation_email' => '[
+				{
+					"violation_type" : "late_alert",
+					"view" : "lateAlert",
+					"subject" : "Late Alert"
+				},
+				{
+					"violation_type" : "minimum_hrs_of_day",
+					"view" : "minDayHours",
+					"subject" : "Minimum day hours"
+				},
+				{
+					"violation_type" : "minimum_hrs_of_week",
+					"view" : "minWeekHours",
+					"subject" : "Minimum week hours"
+				},
+				{
+					"violation_type" : "minimum_hrs_of_month",
+					"view" : "minMonthHours",
+					"subject" : "Minimum monthly hours"
+				}
+			]'
 
 	];
 

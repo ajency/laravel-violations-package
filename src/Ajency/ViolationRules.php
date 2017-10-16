@@ -3,6 +3,8 @@ namespace Ajency\Violations\Ajency;
 
 use Ajency\Violations\Models\Violation;
 use Ajency\Violations\Ajency\Operator;
+use Ajency\Violations\Ajency\ViolationEmail;
+use Illuminate\Support\Facades\Mail;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -51,12 +53,12 @@ class ViolationRules
 		return True;
 	}
 
-	/** [original]
+	/** [ original | entry method ]
 	 * checks for violation and adds the violation
-	 * @param  [type]  $violation_type [description]
-	 * @param  [type]  $data           [description]
-	 * @param  boolean $async          [description]
-	 * @param  boolean $send_mail      [description]
+	 * @param  [type]  $violation_type type of violation
+	 * @param  [type]  $data           all the data required to create the violation
+	 * @param  boolean $async          false | if you need to queue the violation
+	 * @param  boolean $send_mail      default false
 	 * @return [type]                  [description]
 	 */
 	public function checkForViolation($violation_type, $data, $async=False, $send_mail=False){
@@ -78,7 +80,16 @@ class ViolationRules
 			$response = $this->addViolation($violation_type,$data);
 			if($send_mail == true) {
 				// send a mail if necessary
+				// fetch the email data
+				$emailData = (new ViolationEmail)->getEmailData($violation_type);
 
+				Mail::send($emailData['view'], ['rule_key_fields' => $data['rule_key_fields'], 'name' => $data['violation_data']['who_meta']['name']], function($message) use($data, $emailData) {
+				$message->from(isset($data['from']) ? $data['from'] : config('aj-vio-config.default_email_sender'));
+				$message->to($data['violation_data']['who_meta']['email'])
+						->cc($data['violation_data']['cc_list'])
+						->bcc($data['violation_data']['bcc_list'])
+						->subject($emailData['subject']);
+				});
 			}
 		}
 
