@@ -73,6 +73,8 @@
     |			d. value : Accepts a variable name - same as what would be passed at the time of creating violation. If not passed preset_value will be used
     |
     |			e. preset_value : A default value for the key_field. If set and if the value is not sent at the time of creating violation then this value will be used to
+	|
+	|			f. rule_operator : and / or | logical operator that would be applied to the rules
     |
     */
 		'create_violation_rules' => '[
@@ -86,6 +88,7 @@
                               ],
                               "bcc_list": []
                             },
+							"rule_operator" : "and",
                             "rules": [
                               {
                                 "title": "Start time",
@@ -106,6 +109,7 @@
                               ],
                               "bcc_list": []
                             },
+							"rule_operator" : "and",
                             "rules": [
                               {
                                 "title": "Total Hours in a day",
@@ -126,6 +130,7 @@
                               ],
                               "bcc_list": []
                             },
+							"rule_operator" : "and",
                             "rules": [
                               {
                                 "title": "Total hours in a week",
@@ -146,6 +151,7 @@
                               ],
                               "bcc_list": []
                             },
+							"rule_operator" : "and",
                             "rules": [
                               {
                                 "title": "Total hours in a month",
