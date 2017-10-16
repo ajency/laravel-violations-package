@@ -22,8 +22,8 @@ class Operator {
         }
         else {
             // type numeric
-            $lhs = (int)$lhs;
-            $rhs = (int)$rhs;
+            $lhs = (float)$lhs;
+            $rhs = (float)$rhs;
         }
         // now check the condition
         if($lhs > $rhs)
@@ -40,8 +40,8 @@ class Operator {
         }
         else {
             // type numeric
-            $lhs = (int)$lhs;
-            $rhs = (int)$rhs;
+            $lhs = (float)$lhs;
+            $rhs = (float)$rhs;
         }
         // now check the condition
         if($lhs >= $rhs)
@@ -58,8 +58,8 @@ class Operator {
         }
         else {
             // type numeric
-            $lhs = (int)$lhs;
-            $rhs = (int)$rhs;
+            $lhs = (float)$lhs;
+            $rhs = (float)$rhs;
         }
         // now check the condition
         if($lhs < $rhs)
@@ -76,8 +76,8 @@ class Operator {
         }
         else {
             // type numeric
-            $lhs = (int)$lhs;
-            $rhs = (int)$rhs;
+            $lhs = (float)$lhs;
+            $rhs = (float)$rhs;
         }
         // now check the condition
         if($lhs <= $rhs)
@@ -94,8 +94,8 @@ class Operator {
         }
         else {
             // type numeric
-            $lhs = (int)$lhs;
-            $rhs = (int)$rhs;
+            $lhs = (float)$lhs;
+            $rhs = (float)$rhs;
         }
         // now check the condition
         if($lhs == $rhs)

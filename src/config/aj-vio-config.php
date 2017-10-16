@@ -50,7 +50,7 @@
     |
     |			a. key_field : Mandatory | unique identifier afainst which a rule is made
     |
-    |			b. field_type : Mandatory | defines the type of key_field | Possible values supported - "String", "Numeric", "Boolean"
+    |			b. field_type : Mandatory | defines the type of key_field | Possible values supported - "String", "Numeric", "Boolean", "Time"
     |
     |			c. condition : Mandatory | operator for the rule | Possible values supported:
 	|				greaterThan                     // true if $a > $b
