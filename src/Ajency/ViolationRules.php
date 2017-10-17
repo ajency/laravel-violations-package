@@ -83,7 +83,7 @@ class ViolationRules
 				// fetch the email data
 				$emailData = (new ViolationEmail)->getEmailData($violation_type);
 				$name = explode(' ',$data['violation_data']['who_meta']['name']);
-				Mail::send($emailData['view'], ['rule_key_fields' => $data['rule_key_fields'], 'name' => $name[0]], function($message) use($data, $emailData) {
+				Mail::send('violations/'.$violation_type, ['rule_key_fields' => $data['rule_key_fields'], 'name' => $name[0]], function($message) use($data, $emailData) {
 				$message->from(isset($data['from']) ? $data['from'] : config('aj-vio-config.default_email_sender'));
 				$message->to($data['violation_data']['who_meta']['email'])
 						->cc($data['violation_data']['cc_list'])

@@ -21,6 +21,15 @@ class ViolationsServiceProvider extends ServiceProvider
             __DIR__.'/models/ViolationType.php' => app_path('ViolationType.php'),
         ]);
 
+        $this->commands(['Ajency\Violations\Commands\GenerateViolationEmailTemplates']);
+
+        $violationsConfig = json_decode(config('aj-vio-config.create_violation_rules'));
+
+        foreach($violationsConfig as $violation) {
+            // for each violation type copy the default template
+            $this->publishes([
+                __DIR__.'/views/default_email.blade.php' => resource_path('views/violations/'.$violation->violation_type.'.blade.php')]);
+        }
     }
 
     /**
