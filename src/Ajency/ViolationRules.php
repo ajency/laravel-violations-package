@@ -38,8 +38,8 @@ class ViolationRules
 			$violationEntry->who_id = $data['violation_data']['who_id'];
 			$violationEntry->who_type = $data['violation_data']['who_type'];
 			$violationEntry->who_meta = serialize($data['violation_data']['who_meta']);
-			$violationEntry->cc_list = serialize($data['violation_data']['cc_list']);
-			$violationEntry->bcc_list = serialize($data['violation_data']['bcc_list']);
+			// $violationEntry->cc_list = serialize($data['violation_data']['cc_list']);
+			// $violationEntry->bcc_list = serialize($data['violation_data']['bcc_list']);
 			$violationEntry->save();
 		}
 		catch(Exception $e) {
@@ -81,14 +81,22 @@ class ViolationRules
 			if($send_mail == true) {
 				// send a mail if necessary
 				// fetch the email data
-				$emailData = (new ViolationEmail)->getEmailData($violation_type);
+				$vioData = $this->getViolationRules($violation_type);
+				$ccList = [];
+				foreach($vioData->violation_data->cc_list as $cc) {
+					array_push($ccList,$data['violation_data']['mailing_list'][$cc]);
+				}
+				$bccList = [];
+				foreach($vioData->violation_data->bcc_list as $bcc) {
+					array_push($bccList,$data['violation_data']['mailing_list'][$bcc]);
+				}
 				$name = explode(' ',$data['violation_data']['who_meta']['name']);
-				Mail::send('violations/'.$violation_type, ['rule_key_fields' => $data['rule_key_fields'], 'name' => $name[0]], function($message) use($data, $emailData) {
+				Mail::send('violations/'.$violation_type, ['rule_key_fields' => $data['rule_key_fields'], 'name' => $name[0]], function($message) use($data, $ccList, $bccList, $vioData) {
 				$message->from(isset($data['from']) ? $data['from'] : config('aj-vio-config.default_email_sender'));
 				$message->to($data['violation_data']['who_meta']['email'])
-						->cc($data['violation_data']['cc_list'])
-						->bcc($data['violation_data']['bcc_list'])
-						->subject($emailData['subject']);
+						->cc($ccList)
+						->bcc($bccList)
+						->subject(isset($vioData->violation_data->subject_line) ? $vioData->violation_data->subject_line : 'Violation alert');
 				});
 			}
 		}
@@ -103,6 +111,8 @@ class ViolationRules
 	 * @return [type] $status        true / false (whether the rules were violated)
 	 */
 	public function checkViolationRules($violationType,$data) {
+		// $vioData = $this->getViolationRules($violationType);
+		// $operator = $vioData['rule_operator'];
 		// first get all the rules for the violation
 		$violationRules = $this->getViolationRules($violationType);
 		// if no violation rules exist
