@@ -38,11 +38,13 @@
     | JSON fields property description:
     | 1. violation_type - Mandatory field | Defines what type of violation. Same would be used whenever reference is made.
     | 2. violation_data -
+	|		- Subject line to be used incase an email is to be send | if not specified the default subject line is 'Violation alert'
     |		- JSON explaining who should be in cc_list and bcc_list of violation.
     |		- Each value would be treated as an multi valued array.
     |		- Accepts variable names that would be same as in the application. Each variable's actual value will be interpreted as an array. Make sure same field name is used when the violation is actually created.
     |		- If not defined cc_list and bcc_list would be treated empty.
-    | 3. rules -
+	| 3. rule_operator : and / or | logical operator that would be applied to the rules
+    | 4. rules -
     |		- Mandatory
     |		- An array of json objects defining rules for a violation
     |		- Assumed to be empty array if no rules defined. Violation will not get created when empty.
@@ -74,7 +76,6 @@
     |
     |			e. preset_value : A default value for the key_field. If set and if the value is not sent at the time of creating violation then this value will be used to
 	|
-	|			f. rule_operator : and / or | logical operator that would be applied to the rules
     |
     */
 		'create_violation_rules' => '[
@@ -86,7 +87,8 @@
                                 "organisation_time_manager",
                                 "organisation_owner"
                               ],
-                              "bcc_list": []
+                              "bcc_list": [],
+							  "subject_line" : "Late alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -107,7 +109,8 @@
                                 "organisation_time_manager",
                                 "organisation_owner"
                               ],
-                              "bcc_list": []
+                              "bcc_list": [],
+							  "subject_line" : "Minimum daily hours alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -128,7 +131,8 @@
                                 "organisation_time_manager",
                                 "organisation_owner"
                               ],
-                              "bcc_list": []
+                              "bcc_list": [],
+							  "subject_line" : "Minimum weekly hours alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -137,7 +141,7 @@
                                 "key_field": "total_hrs_in_week",
                                 "field_type": "Numeric",
                                 "condition": "less_than_expression",
-                                "value": "organisation_total_hrs_of_day * violator_total_week_days",
+                                "value": "organisation_total_week_hours",
                                 "preset_value": 45
                               }
                             ]
@@ -149,7 +153,8 @@
                                 "organisation_time_manager",
                                 "organisation_owner"
                               ],
-                              "bcc_list": []
+                              "bcc_list": [],
+							  "subject_line" : "Minimum monthly hours alert"
                             },
 							"rule_operator" : "and",
                             "rules": [
@@ -168,44 +173,9 @@
 		/**
 		 * default email sender : this will be used is no from attribute is sent in the violation_data
 		 *
-		 * this will be overridden if a from is passed in the violation_data
+		 * this will be overridden if a 'from' attribute is passed in the violation_data
 		 */
 		'default_email_sender' => 'dilbert@ajency.in',
-		/**
-		 * Date required when sending an email
-		 *
-		 * [ NOTE ]
-		 * The name of the violator and the rule_key_fields will be passed to the view by default, which could be used in the mail content
-		 *
-		 * default email sender : this will be used is no from attribute is sent in the violation_data
-		 *
-		 * violation_type : type of the violation (same as above)
-		 * view : the name of the blade file in view that contains the email content
-		 * subject : subject line that will be added to the email
-		 */
-		'default_email_sender' => 'dilbert@ajency.in',
-		'violation_email' => '[
-				{
-					"violation_type" : "late_alert",
-					"view" : "lateAlert",
-					"subject" : "Late Alert"
-				},
-				{
-					"violation_type" : "minimum_hrs_of_day",
-					"view" : "minDayHours",
-					"subject" : "Minimum day hours"
-				},
-				{
-					"violation_type" : "minimum_hrs_of_week",
-					"view" : "minWeekHours",
-					"subject" : "Minimum week hours"
-				},
-				{
-					"violation_type" : "minimum_hrs_of_month",
-					"view" : "minMonthHours",
-					"subject" : "Minimum monthly hours"
-				}
-			]'
 
 	];
 
