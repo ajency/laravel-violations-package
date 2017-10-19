@@ -30,16 +30,17 @@ class ViolationRules
 	 * @param boolean $async          [description]
 	 * @param boolean $send_mail      [description]
 	 */
-	public function addViolation($violation_type, $data, $async=False, $send_mail=False){
+	public function addViolation($violation_type, $data){
 		try {
 			$violationEntry = new Violation;
-			$violationEntry->status = 0; // [ NOTE ] change this to the status codes
+			$violationEntry->status = 0; // [ TODO | NOTE ] change this to the status codes
 			$violationEntry->type = $violation_type;
 			$violationEntry->who_id = $data['violation_data']['who_id'];
 			$violationEntry->who_type = $data['violation_data']['who_type'];
 			$violationEntry->who_meta = serialize($data['violation_data']['who_meta']);
-			// $violationEntry->cc_list = serialize($data['violation_data']['cc_list']);
-			// $violationEntry->bcc_list = serialize($data['violation_data']['bcc_list']);
+			$emailData = $this->getEmailData($violation_type,$data);
+			$violationEntry->cc_list = serialize($emailData['cc_list']);
+			$violationEntry->bcc_list = serialize($emailData['bcc_list']);
 			$violationEntry->save();
 		}
 		catch(Exception $e) {
@@ -81,22 +82,14 @@ class ViolationRules
 			if($send_mail == true) {
 				// send a mail if necessary
 				// fetch the email data
-				$vioData = $this->getViolationRules($violation_type);
-				$ccList = [];
-				foreach($vioData->violation_data->cc_list as $cc) {
-					array_push($ccList,$data['violation_data']['mailing_list'][$cc]);
-				}
-				$bccList = [];
-				foreach($vioData->violation_data->bcc_list as $bcc) {
-					array_push($bccList,$data['violation_data']['mailing_list'][$bcc]);
-				}
+				$emailData = $this->getEmailData($violation_type,$data);
 				$name = explode(' ',$data['violation_data']['who_meta']['name']);
-				Mail::send('violations/'.$violation_type, ['rule_key_fields' => $data['rule_key_fields'], 'name' => $name[0]], function($message) use($data, $ccList, $bccList, $vioData) {
+				Mail::send('violations/'.$violation_type, ['rule_key_fields' => $data['rule_key_fields'], 'name' => $name[0]], function($message) use($data, $emailData) {
 				$message->from(isset($data['from']) ? $data['from'] : config('aj-vio-config.default_email_sender'));
 				$message->to($data['violation_data']['who_meta']['email'])
-						->cc($ccList)
-						->bcc($bccList)
-						->subject(isset($vioData->violation_data->subject_line) ? $vioData->violation_data->subject_line : 'Violation alert');
+						->cc($emailData['cc_list'])
+						->bcc($emailData['bcc_list'])
+						->subject($emailData['subject']);
 				});
 			}
 		}
@@ -189,6 +182,28 @@ class ViolationRules
 				return ['status' => 'error', 'message' => $e->getMessage()];
 		}
 
+	}
+
+	/**
+	 * return email specific data from the violations config. Contains subject, cc_list and bcc_list
+	 * @param  [type] $violation_type [description]
+	 * @param  [type] $data           [description]
+	 * @return [type]                 [description]
+	 */
+	public function getEmailData($violation_type,$data) {
+		$vioData = $this->getViolationRules($violation_type);
+		$return['subject'] = isset($vioData->violation_data->subject_line) ? $vioData->violation_data->subject_line : 'Violation alert';
+		$ccList = [];
+		foreach($vioData->violation_data->cc_list as $cc) {
+			array_push($ccList,$data['violation_data']['mailing_list'][$cc]);
+		}
+		$return['cc_list'] = $ccList;
+		$bccList = [];
+		foreach($vioData->violation_data->bcc_list as $bcc) {
+			array_push($bccList,$data['violation_data']['mailing_list'][$bcc]);
+		}
+		$return['bcc_list'] = $bccList;
+		return $return;
 	}
 }
 
