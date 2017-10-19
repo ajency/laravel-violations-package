@@ -111,8 +111,8 @@ class ViolationRules
 	 * @return [type] $status        true / false (whether the rules were violated)
 	 */
 	public function checkViolationRules($violationType,$data) {
-		// $vioData = $this->getViolationRules($violationType);
-		// $operator = $vioData['rule_operator'];
+		$vioData = $this->getViolationRules($violationType);
+		$logicalOperator = $vioData->rule_operator;
 		// first get all the rules for the violation
 		$violationRules = $this->getViolationRules($violationType);
 		// if no violation rules exist
@@ -131,9 +131,19 @@ class ViolationRules
 
 			// condition(key_field,value)
 			$condition = $rule->condition;
-			 if((new Operator)->$condition($keyField,$valueField,$rule->field_type))
+			 if((new Operator)->$condition($keyField,$valueField,$rule->field_type)) {
 			 	// if rule violated return true else check next rule
-			 	return true;
+				if($logicalOperator == "or")
+			 		return true;
+			}
+			else {
+				if($logicalOperator == "and")
+					return false;
+			}
+			if($logicalOperator == "or")
+				return false;
+			else if($logicalOperator == "and")
+				return true;
 		}
 		return false;
 	}
