@@ -62,7 +62,7 @@ class ViolationRules
 	 * @param  boolean $send_mail      default false
 	 * @return [type]                  [description]
 	 */
-	public function checkForViolation($violation_type, $data, $async=False, $send_mail=False){
+	public function checkForViolation($violation_type, $data, $async=false, $send_mail=false){
 		// $result = [
 		// 	'violation'=> []
 		// ];
@@ -94,7 +94,7 @@ class ViolationRules
 			}
 		}
 
-		return $response;
+		return ['status' => 'success', 'message' => 'Violation check complete.'];
 	}
 
 	/**
