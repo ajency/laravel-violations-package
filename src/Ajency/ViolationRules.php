@@ -92,9 +92,10 @@ class ViolationRules
 						->subject($emailData['subject']);
 				});
 			}
+			return ['status' => 'violation', 'message' => 'Violation check complete.'];
 		}
 
-		return ['status' => 'success', 'message' => 'Violation check complete.'];
+		return ['status' => 'no-violation', 'message' => 'Violation check complete.'];
 	}
 
 	/**
