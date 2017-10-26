@@ -15,7 +15,7 @@ class CreateAjVioViolationsTable extends Migration
     {
         Schema::create('aj_vio_violations', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('status')->unique();
+            $table->integer('status');
             $table->string('type');
             $table->integer('who_id');
             $table->string('who_type');
