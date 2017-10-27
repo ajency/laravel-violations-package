@@ -194,6 +194,8 @@ class ViolationRules
 	public function getEmailData($violation_type,$data) {
 		$vioData = $this->getViolationRules($violation_type);
 		$return['subject'] = isset($vioData->violation_data->subject_line) ? $vioData->violation_data->subject_line : 'Violation alert';
+		if(App::environment() == 'local')
+			$return['subject'] = '[ TEST EMAIL - PLEASE IGNORE ] '.$return['subject'];
 		$ccList = [];
 		foreach($vioData->violation_data->cc_list as $cc) {
 			array_push($ccList,$data['violation_data']['mailing_list'][$cc]);
