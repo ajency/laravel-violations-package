@@ -1,6 +1,8 @@
 <?php
 namespace Ajency\Violations\Ajency;
 
+use App;
+
 use Ajency\Violations\Models\Violation;
 use Ajency\Violations\Ajency\Operator;
 use Ajency\Violations\Ajency\ViolationEmail;
