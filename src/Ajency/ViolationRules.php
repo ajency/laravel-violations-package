@@ -40,6 +40,7 @@ class ViolationRules
 			$violationEntry->who_id = $data['violation_data']['who_id'];
 			$violationEntry->who_type = $data['violation_data']['who_type'];
 			$violationEntry->who_meta = serialize($data['violation_data']['who_meta']);
+			$violationEntry->whom_meta = serialize($data['rule_key_fields']);
 			$emailData = $this->getEmailData($violation_type,$data);
 			$violationEntry->cc_list = serialize($emailData['cc_list']);
 			$violationEntry->bcc_list = serialize($emailData['bcc_list']);
