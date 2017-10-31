@@ -180,7 +180,27 @@ class ViolationRules
 				$endDate = $filters['date_range']['start'].' 23:59:59';
 			// the query to fetch the violations
 			$queryResults = Violation::whereBetween('created_at',[$startDate,$endDate])->where(['type' => $filters['type'], 'who_id' => $filters['who_id']/*, 'status' => $filters['status']*/])->get();
-			return $queryResults;
+
+			// created the output array
+			$output = [];
+
+			foreach($queryResults as $query) {
+				$queryObj['id'] = $query->id;
+				$queryObj['status'] = $query->status;
+				$queryObj['type'] = $query->type;
+				$queryObj['who_id'] = $query->who_id;
+				$queryObj['who_type'] = $query->who_type;
+				$queryObj['who_meta'] = unserialize($query->who_meta);
+				$queryObj['whom_id'] = $query->whom_id;
+				$queryObj['whom_type'] = $query->whom_type;
+				$queryObj['whom_meta'] = unserialize($query->whom_meta);
+				$queryObj['cc_list'] = unserialize($query->cc_list);
+				$queryObj['bcc_list'] = unserialize($query->bcc_list);
+
+				array_push($output,$queryObj);
+			}
+
+			return $output;
 		}
 		catch(Exception $e) {
 				return ['status' => 'error', 'message' => $e->getMessage()];
