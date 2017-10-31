@@ -179,7 +179,7 @@ class ViolationRules
 			else
 				$endDate = $filters['date_range']['start'].' 23:59:59';
 			// the query to fetch the violations
-			$queryResults = Violation::whereBetween('created_at',[$startDate,$endDate])->where(['type' => $filters['type'], 'who_id' => $filters['who_id']/*, 'status' => $filters['status']*/])->get();
+			$queryResults = Violation::whereBetween('created_at',[$startDate,$endDate])->where([/*'type' => $filters['type'], */'who_id' => $filters['who_id']/*, 'status' => $filters['status']*/])->get();
 
 			// created the output array
 			$output = [];
