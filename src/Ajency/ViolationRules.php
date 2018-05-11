@@ -7,6 +7,7 @@ use Ajency\Violations\Models\Violation;
 use Ajency\Violations\Ajency\Operator;
 use Ajency\Violations\Ajency\ViolationEmail;
 use Illuminate\Support\Facades\Mail;
+use DateTime;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -231,6 +232,30 @@ class ViolationRules
 		$return['bcc_list'] = $bccList;
 		return $return;
 	}
-}
 
-?>
+	/**
+	 * invalidates a vioaltion against a model by setting the invalid flag to true
+	 * @param  [type] $flag           value of the invalid flag - true / false
+	 * @param  [type] $who_id         model id
+	 * @param  [type] $violation_type type of violation
+	 * @param  [type] $start          start time filter
+	 * @param  [type] $end            end time filter - optional.
+	 * 								  if not passed it is 23:59:59 of the start time date
+	 * @return [type]                 [description]
+	 */
+	public function updateInvalidFlag($flag_value, $who_id, $violation_type, $start, $end = null) {
+		// determine the start time and end time
+		$startTime = new DateTime($start);
+		if($end == null) {
+			$endTime = new DateTime($startTime->format('Y-m-d').' 23:59:59');
+		}
+		else
+			$endTime = new DateTime($end);
+
+		// fetch the violations betweeen start and end
+		Violation::where([
+			'who_id' => $who_id,
+			'type' => $violation_type,
+		])->whereBetween('created_at', [$startTime, $endTime])->update(['invalid_flag' => $flag_value]);
+	}
+}
